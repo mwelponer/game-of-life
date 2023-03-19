@@ -6,9 +6,9 @@ This code is based on [Conway's Game of Life](https://en.wikipedia.org/wiki/Conw
 
 - read and validate the input file (e.g., input.txt, mike.txt)
 - visualisation of the matrix, generation of the next matrices
-- user interaction (spacebar for the generate next matrix, escape to exit the program)
+- user interaction (spacebar to generate the next matrix, escape to exit the program)
 
-> NB: generation function works in-place to be space-complexity efficient. But a non in-place version of the function is also included in the code
+> NB: the generation function works in-place to be space-complexity efficient. But a non in-place version of the function is also included in the code
 
 
 ## problem description
