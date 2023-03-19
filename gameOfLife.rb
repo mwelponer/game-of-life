@@ -1,4 +1,4 @@
-# Michele Welponer, Conway's Game of Life.
+# Michele Welponer, code written based on Conway's Game of Life.
 # Copyright (C) 2023  Michele Welponer
 
 # This program is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ def printGrid(grid, generation)
     for r in 0...rows do
         row = ''
         for c in 0...cols do
-            row += grid[r][c] == 1 ? '*' : '.'
+            row += grid[r][c]
         end
         puts(row)
     end
@@ -34,7 +34,7 @@ end
 
 def getNext(grid, dirs)
     rows, cols = grid.size, grid[0].size
-    res = Array.new(rows) { Array.new(cols) { 0 } }
+    res = Array.new(rows) { Array.new(cols) { '.' } }
 
     for r in 0...rows do
         for c in 0...cols do
@@ -44,19 +44,19 @@ def getNext(grid, dirs)
                 row, col = r + dr, c + dc
                 #puts row.to_s + ' ' + col.to_s
                 if row >= 0 and row < rows and col >= 0 and col < cols
-                    neighbors += grid[row][col]
+                    neighbors += grid[row][col] == '*' ? 1 : 0
                 end
             end
             #puts 'neighbors: ' + neighbors.to_s
 
             # evaluate next
-            if grid[r][c] == 1 # is alive
+            if grid[r][c] == '*' # is alive
                 if neighbors >= 2 and neighbors <= 3
-                    res[r][c] = 1
+                    res[r][c] = '*'
                 end
             else # is dead
                 if neighbors == 3
-                    res[r][c] = 1
+                    res[r][c] = '*'
                 end
             end
         end
@@ -72,17 +72,17 @@ def getNextInplace(grid, dirs)
         for c in 0...cols do
             # code: keeps track of the previous configuration
             # first next  code
-            # 0     0     0
-            # 1     0     1
-            # 0     1     2
-            # 1     1     3
+            # .     .     0
+            # *     .     1
+            # .     *     2
+            # *     *     3
             # count neighbors
             neighbors = 0
             for dr, dc in dirs
                 row, col = r + dr, c + dc
                 #puts row.to_s + ' ' + col.to_s
                 if row >= 0 and row < rows and col >= 0 and col < cols
-                    if grid[row][col] == 1 or grid[row][col] == 3
+                    if grid[row][col] == '*' or grid[row][col] == '1' or grid[row][col] == '3'
                         neighbors += 1
                     end
                 end
@@ -90,15 +90,15 @@ def getNextInplace(grid, dirs)
             #puts 'neighbors: ' + neighbors.to_s
 
             # evaluate next inplace
-            if grid[r][c] == 1 # cell is alive
+            if grid[r][c] == '1' or grid[r][c] == '*' # cell is alive
                 if neighbors >= 2 and neighbors <= 3 # condition to remain alive
-                    grid[r][c] = 3 # from 1 to 1, code is 3
+                    grid[r][c] = '3' # from 1 to 1, code is 3
                 else
-                    grid[r][c] = 1 # from 1 to 0, code is 1
+                    grid[r][c] = '1' # from 1 to 0, code is 1
                 end
             else # cell is dead
                 if neighbors == 3 # condition to get alive
-                    grid[r][c] = 2 # from 0 to 1, code is 2
+                    grid[r][c] = '2' # from 0 to 1, code is 2
                 # else condition to remain dead, from 0 to 0, code is already 0
                 end
             end
@@ -108,10 +108,10 @@ def getNextInplace(grid, dirs)
     # convert code to next
     for r in 0...rows do
         for c in 0...cols do
-            if grid[r][c] == 1
-                grid[r][c] = 0
-            elsif grid[r][c] != 0
-              grid[r][c] = 1
+            if grid[r][c] == '1'
+                grid[r][c] = '.'
+            elsif grid[r][c] != '.'
+              grid[r][c] = '*'
             end
         end
     end
@@ -145,6 +145,12 @@ dirs = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1],
 # grid = getNextInplace(grid, dirs)
 # printGrid(grid, 1)
 
+# i = 5
+# c = '*'
+# puts 'i:' + i.size.to_s
+# puts 'c:' + c.size.to_s
+# exit()
+
 ######################################### PARSE FILE ###########################
 currentDir = Dir.pwd
 # puts currentDir
@@ -169,7 +175,7 @@ File.foreach(currentDir + "/mike.txt") { |line|
         badFormat()
       end
       puts "rows: " + rows.to_s + " cols: " + cols.to_s + " ..OK"
-      grid = Array.new(rows.to_i) { Array.new(cols.to_i) { 0 } }
+      grid = Array.new(rows.to_i) { Array.new(cols.to_i) { "." } }
       next
 
     else # for all the following lines
@@ -184,7 +190,7 @@ File.foreach(currentDir + "/mike.txt") { |line|
         if line[c] != '.' and line[c] != '*'
           badFormat()
         end
-        grid[count - 3][c] = line[c] == "." ? 0 : 1
+        grid[count - 3][c] = line[c]
       end
   end
 }
@@ -198,7 +204,7 @@ loop do
   case $stdin.getch
     when "\s"  then
       #puts 'space'
-      grid = getNextInplace(grid, dirs)
+      grid = getNext(grid, dirs)
       count += 1
     when "\e"  then
       #puts 'escape'
