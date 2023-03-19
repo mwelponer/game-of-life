@@ -2,7 +2,7 @@
 
 This code is based on [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). Copyright (C) 2023  Michele Welponer
 
-## solution: implemented functionalities:
+## solution: implemented functionalities
 
 - read and validate the input file (e.g., input.txt, mike.txt)
 - visualisation of the matrix, generation of the next matrices
