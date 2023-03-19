@@ -1,6 +1,15 @@
 # Game Of Life
 
-This code kata is based on [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
+This code is based on [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life). Copyright (C) 2023  Michele Welponer
+
+## solution: implemented functionalities:
+
+- read and validate the input file (e.g., input.txt, mike.txt)
+- visualisation of the matrix, generation of the next matrices
+- user interaction (spacebar for the generate next matrix, escape to exit the program)
+
+> NB: generation function works in-place to be space-complexity efficient. But a non in-place version of the function is also included in the code
+
 
 ## problem description
 Given a input generation the goal of this kata is to calculate the next generation.
@@ -42,8 +51,3 @@ Generation 4:
 ...**...
 ........
 ```
-
-## Notes
-* Implement the requirements focusing on **writing the best code you can produce**.
-* When ready share with us a git repo (github/gitlab) with your solution.
-* Feel free to provide a console application, web application, whatever!
